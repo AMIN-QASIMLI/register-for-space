@@ -5,7 +5,6 @@ import "./index.css";
 import App from "./App.tsx";
 import { extendTheme } from "@chakra-ui/react";
 
-// 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
     900: "#1a365d",

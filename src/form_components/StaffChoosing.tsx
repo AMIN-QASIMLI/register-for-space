@@ -17,11 +17,13 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Spinner,
+  Image,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useForm, useFieldArray } from "react-hook-form";
 import { staffs, stepIndex } from "../stores/store";
 import { useState } from "react";
+import astronaut from "../assets/astronaut.svg";
 
 type CrewMember = {
   name: string;
@@ -130,9 +132,11 @@ export function StaffChoosing() {
   return (
     <Flex
       p={6}
-      direction={"column"}
       alignItems="center"
       justifyContent="center"
+      bg={"#97b0a680"}
+      borderRadius={"3xl"}
+      gap={2}
     >
       {isChecking ? (
         <Spinner />
@@ -143,9 +147,9 @@ export function StaffChoosing() {
           alignItems={"center"}
           justifyContent={"center"}
           wrap={"wrap"}
-          direction={"column"}
           bg={"#97b0a680"}
           borderRadius={"3xl"}
+          direction={"column"}
           gap={4}
           p={4}
           overflow={"auto"}
@@ -155,7 +159,7 @@ export function StaffChoosing() {
               <VStack align="stretch" spacing={6}>
                 <HStack justifyContent="space-between">
                   <Text fontSize="xl" color="#98eebcff">
-                    Heyət Üzvləri
+                    Mission Members
                   </Text>
                   <HStack>
                     <Button
@@ -276,6 +280,7 @@ export function StaffChoosing() {
           </Flex>
         </Flex>
       )}
+      <Image src={astronaut} maxW={"600px"} maxH={"300px"} />
     </Flex>
   );
 }

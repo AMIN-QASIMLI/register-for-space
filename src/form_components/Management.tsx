@@ -14,12 +14,14 @@ import {
   Badge,
   VStack,
   Spinner,
+  Image,
 } from "@chakra-ui/react";
 import { missionParams, formManagement, stepIndex } from "../stores/store";
 import { Controller, useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import planet_settings from "../assets/planet_settings.svg";
 
 type RocketKey = "Starship" | "Falcon Heavy" | "Artemis V";
 
@@ -151,125 +153,137 @@ export const ManagementForm: React.FC = () => {
     <Spinner />
   ) : (
     <Flex
-      minH={"300px"}
-      minW={"300px"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      wrap={"wrap"}
-      direction={"column"}
       bg={"#97b0a680"}
       borderRadius={"3xl"}
       gap={4}
       p={4}
-      overflow={"auto"}
-      width="100%"
+      alignItems={"center"}
+      justifyContent={"center"}
     >
-      <VStack spacing={4} w="100%" maxW="700px" align="stretch">
-        <form onSubmit={handleSubmit<FormValues>(onSubmit)}>
-          <Flex
-            p={4}
-            borderRadius="md"
-            bg="whiteAlpha.200"
-            alignItems="center"
-            gap={4}
-            wrap="wrap"
-            direction={{ base: "column", md: "row" }}
-          >
-            <FormControl isInvalid={!!errors.rocket} maxW="320px">
-              <FormLabel>Raket Seçimi</FormLabel>
-              <Controller
-                control={control}
-                name="rocket"
-                render={({ field }) => (
-                  <Select placeholder="Raket seçin" {...field}>
-                    {ROCKETS.map((r) => (
-                      <option key={r.value} value={r.value}>
-                        {r.label}
-                      </option>
-                    ))}
-                  </Select>
-                )}
-              />
-              <FormErrorMessage>
-                {errors.rocket?.message?.toString()}
-              </FormErrorMessage>
-            </FormControl>
-            <Flex direction="column" alignItems="flex-start" gap={1}>
-              <Text>
-                Maksimum Yük:{" "}
-                <b>
-                  {rocketInfo ? `${rocketInfo.maxKg.toLocaleString()} kg` : "—"}
-                </b>
-              </Text>
-              {rocketInfo?.highRisk && (
-                <Badge colorScheme="red">Yüksək Riskli</Badge>
-              )}
-            </Flex>
-            <FormControl isInvalid={!!errors.totalWeight} maxW="220px">
-              <FormLabel>Yükün Ümumi Çəkisi (kg)</FormLabel>
-              <Controller
-                control={control}
-                name="totalWeight"
-                render={({ field }) => (
-                  <NumberInput
-                    min={0}
-                    value={field.value ?? ""}
-                    onChange={(val) => {
-                      const parsed = val === "" ? "" : Number(val);
-                      field.onChange(parsed);
-                    }}
-                  >
-                    <NumberInputField />
-                  </NumberInput>
-                )}
-              />
-              <FormErrorMessage>
-                {errors.totalWeight?.message?.toString()}
-              </FormErrorMessage>
-            </FormControl>
-          </Flex>
-          <Flex
-            p={4}
-            borderRadius="md"
-            bg="whiteAlpha.200"
-            alignItems="flex-start"
-            justifyContent={"center"}
-            gap={4}
-            direction={"column"}
-            mt={4}
-          >
-            <FormControl isInvalid={!!errors.supplies}>
-              <FormLabel>Missiya Təchizatı ({missionType})</FormLabel>
-              <Controller
-                control={control}
-                name="supplies"
-                render={({ field }) => (
-                  <CheckboxGroup
-                    value={field.value}
-                    onChange={(v) => field.onChange(v)}
-                  >
-                    <Flex direction="column" gap={2}>
-                      {supplyOptions.map((opt) => (
-                        <Checkbox key={opt} value={opt}>
-                          {opt}
-                        </Checkbox>
+      <Flex
+        minH={"300px"}
+        minW={"300px"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        wrap={"wrap"}
+        direction={"column"}
+        bg={"#97b0a680"}
+        borderRadius={"3xl"}
+        gap={4}
+        p={4}
+        overflow={"auto"}
+        width="100%"
+      >
+        <VStack spacing={4} w="100%" maxW="700px" align="stretch">
+          <form onSubmit={handleSubmit<FormValues>(onSubmit)}>
+            <Flex
+              p={4}
+              borderRadius="md"
+              bg="whiteAlpha.200"
+              alignItems="center"
+              gap={4}
+              wrap="wrap"
+              direction={{ base: "column", md: "row" }}
+            >
+              <FormControl isInvalid={!!errors.rocket} maxW="320px">
+                <FormLabel>Raket Seçimi</FormLabel>
+                <Controller
+                  control={control}
+                  name="rocket"
+                  render={({ field }) => (
+                    <Select placeholder="Raket seçin" {...field}>
+                      {ROCKETS.map((r) => (
+                        <option key={r.value} value={r.value}>
+                          {r.label}
+                        </option>
                       ))}
-                    </Flex>
-                  </CheckboxGroup>
+                    </Select>
+                  )}
+                />
+                <FormErrorMessage>
+                  {errors.rocket?.message?.toString()}
+                </FormErrorMessage>
+              </FormControl>
+              <Flex direction="column" alignItems="flex-start" gap={1}>
+                <Text>
+                  Maksimum Yük:{" "}
+                  <b>
+                    {rocketInfo
+                      ? `${rocketInfo.maxKg.toLocaleString()} kg`
+                      : "—"}
+                  </b>
+                </Text>
+                {rocketInfo?.highRisk && (
+                  <Badge colorScheme="red">Yüksək Riskli</Badge>
                 )}
-              />
-              <FormErrorMessage>
-                {errors.supplies?.message?.toString()}
-              </FormErrorMessage>
-            </FormControl>
-          </Flex>
-          <Flex mt={4} justifyContent="flex-end">
-            <Button colorScheme="blue" type="submit" isLoading={isSubmitting}>
-              Send Your Mission into the Universe!
-            </Button>
-          </Flex>
-        </form>
-      </VStack>
+              </Flex>
+              <FormControl isInvalid={!!errors.totalWeight} maxW="220px">
+                <FormLabel>Yükün Ümumi Çəkisi (kg)</FormLabel>
+                <Controller
+                  control={control}
+                  name="totalWeight"
+                  render={({ field }) => (
+                    <NumberInput
+                      min={0}
+                      value={field.value ?? ""}
+                      onChange={(val) => {
+                        const parsed = val === "" ? "" : Number(val);
+                        field.onChange(parsed);
+                      }}
+                    >
+                      <NumberInputField />
+                    </NumberInput>
+                  )}
+                />
+                <FormErrorMessage>
+                  {errors.totalWeight?.message?.toString()}
+                </FormErrorMessage>
+              </FormControl>
+            </Flex>
+            <Flex
+              p={4}
+              borderRadius="md"
+              bg="whiteAlpha.200"
+              alignItems="flex-start"
+              justifyContent={"center"}
+              gap={4}
+              direction={"column"}
+              mt={4}
+            >
+              <FormControl isInvalid={!!errors.supplies}>
+                <FormLabel>Missiya Təchizatı ({missionType})</FormLabel>
+                <Controller
+                  control={control}
+                  name="supplies"
+                  render={({ field }) => (
+                    <CheckboxGroup
+                      value={field.value}
+                      onChange={(v) => field.onChange(v)}
+                    >
+                      <Flex direction="column" gap={2}>
+                        {supplyOptions.map((opt) => (
+                          <Checkbox key={opt} value={opt}>
+                            {opt}
+                          </Checkbox>
+                        ))}
+                      </Flex>
+                    </CheckboxGroup>
+                  )}
+                />
+                <FormErrorMessage>
+                  {errors.supplies?.message?.toString()}
+                </FormErrorMessage>
+              </FormControl>
+            </Flex>
+            <Flex mt={4} justifyContent="flex-end">
+              <Button colorScheme="blue" type="submit" isLoading={isSubmitting}>
+                Send Your Mission into the Universe!
+              </Button>
+            </Flex>
+          </form>
+        </VStack>
+      </Flex>
+      <Image src={planet_settings} maxW={"600px"} maxH={"300px"} />
     </Flex>
   );
 };
